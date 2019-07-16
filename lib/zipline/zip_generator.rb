@@ -71,7 +71,7 @@ module Zipline
           Net::HTTP.get_response(the_remote_uri) do |response|
             response.read_body do |chunk|
               pp "Chunk received: #{chunk.size}"
-              IO.copy_stream(chunk, writer_for_file)
+              writer_for_file << chunk
             end
           end
         elsif file[:file]
