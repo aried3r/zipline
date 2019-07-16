@@ -68,6 +68,7 @@ module Zipline
 
           Net::HTTP.get_response(the_remote_uri) do |response|
             response.read_body do |chunk|
+              Rails.logger.debug "Chunk received: #{chunk.size}"
               IO.copy_stream(chunk, writer_for_file)
             end
           end
