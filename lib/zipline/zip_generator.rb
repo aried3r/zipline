@@ -63,6 +63,7 @@ module Zipline
 
     def write_file(streamer, file, name, options)
       streamer.write_deflated_file(name, options) do |writer_for_file|
+        pp file
         if file[:url]
           the_remote_uri = URI(file[:url])
 
