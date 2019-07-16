@@ -30,7 +30,7 @@ module Zipline
     # Currently support carrierwave and paperclip local and remote storage.
     # returns a hash of the form {url: aUrl} or {file: anIoObject}
     def normalize(file)
-      pp file.respond_to? :url
+      return { url: file }
       if defined?(CarrierWave::Uploader::Base) && file.is_a?(CarrierWave::Uploader::Base)
         file = file.file
       end
@@ -64,13 +64,13 @@ module Zipline
 
     def write_file(streamer, file, name, options)
       streamer.write_deflated_file(name, options) do |writer_for_file|
-        pp file
+        pp file[:url]
         if file[:url]
           the_remote_uri = URI(file[:url])
 
           Net::HTTP.get_response(the_remote_uri) do |response|
             response.read_body do |chunk|
-              Rails.logger.debug "Chunk received: #{chunk.size}"
+              pp "Chunk received: #{chunk.size}"
               IO.copy_stream(chunk, writer_for_file)
             end
           end
